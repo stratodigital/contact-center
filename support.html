@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <video id="remoteVideo"></video>
+        <video id="localVideo" muted="muted"></video>
+        <button id="startCall">Call</button>
+        <button id="endCall">End</button>
+
+        <script src="./sip-0.12.0.min.js"></script>
+        <script>
+            var SIP_HOST = '13.229.202.84'
+            var SIP_PORT = '5066'
+            var SIP_USERNAME = '1000'
+            var SIP_PASSWORD = 'i-030452861aa6addf1'
+            var SIP_WS_SERVERS = [
+                'ws://' + SIP_HOST + ':' + SIP_PORT + '/ws'
+            ]
+            console.log(SIP_WS_SERVERS);
+            var options = {
+                media: {
+                    local: {
+                        video: document.getElementById('localVideo')
+                    },
+                    remote: {
+                        video: document.getElementById('remoteVideo'),
+                        // This is necessary to do an audio/video call as opposed to just a video call
+                        audio: document.getElementById('remoteVideo')
+                    }
+                },
+                ua: {
+                    uri: SIP_USERNAME + '@' + SIP_HOST,
+                    authorizationUser: SIP_USERNAME,
+                    password: SIP_PASSWORD,
+                    wsServers: SIP_WS_SERVERS
+                }
+            };
+            var simple = new SIP.Web.Simple(options);
+
+            simple.on('ringing', function() {
+                simple.answer();
+            });
+
+            var startButton = document.getElementById('startCall');
+            var endButton = document.getElementById('endCall');
+
+            startButton.addEventListener('click', function() {
+                simple.call('1001@' + SIP_HOST);
+            });
+
+            endButton.addEventListener('click', function() {
+                simple.hangup();
+                alert('Call ended');
+            });
+        </script>
+    </body>
+</html>
