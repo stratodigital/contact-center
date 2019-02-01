@@ -1,58 +1,118 @@
-<!DOCTYPE html>
-<html>
-    <head>
-    </head>
-    <body>
-        <video id="remoteVideo"></video>
-        <video id="localVideo" muted="muted"></video>
-        <button id="startCall">Call</button>
-        <button id="endCall">End</button>
+<!doctype html>
+<html lang="en">
+<head>
 
-        <script src="./sip-0.12.0.min.js"></script>
-        <script>
-            var SIP_HOST = 'sip.stratodigital.io'
-            var SIP_PORT = '7443'
-            var SIP_USERNAME = '1002'
-            var SIP_PASSWORD = 'i-030452861aa6addf1'
-            var SIP_WS_SERVERS = [
-                'wss://' + SIP_HOST + ':' + SIP_PORT + ''
-            ]
-            console.log(SIP_WS_SERVERS);
-            var options = {
-                media: {
-                    local: {
-                        video: document.getElementById('localVideo')
-                    },
-                    remote: {
-                        video: document.getElementById('remoteVideo'),
-                        // This is necessary to do an audio/video call as opposed to just a video call
-                        audio: document.getElementById('remoteVideo')
-                    }
-                },
-                ua: {
-                    uri: SIP_USERNAME + '@' + SIP_HOST,
-                    authorizationUser: SIP_USERNAME,
-                    password: SIP_PASSWORD,
-                    wsServers: SIP_WS_SERVERS
-                }
-            };
-            var simple = new SIP.Web.Simple(options);
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-            simple.on('ringing', function() {
-                simple.answer();
-            });
+    <title>Grab</title>
 
-            var startButton = document.getElementById('startCall');
-            var endButton = document.getElementById('endCall');
+    <link rel="icon" type="image/png" href="https://annsianghouse.com/wp-content/uploads/2018/01/icon-grab.png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" https://fonts.googleapis.com/css?family=Open+Sans">
+    
+    <style type="text/css">
+    	body{
+			font-family: 'Open Sans', sans-serif;
+			background-color: #009e35;
+		}
+		.login{
+			text-align: center;
+			color: white;
+			padding: 40px;		
+		}
 
-            startButton.addEventListener('click', function() {
-                simple.call('1000@' + SIP_HOST);
-            });
+		.title{
+			font-weight: 700;
+		}
+		.btn-grab{
+		    background-color:#fff;
+		    border: 1px solid #fff;
+			border-radius: 20px;
+			margin-top: 20px;
+			cursor: pointer;
+			font-weight: 600;
+			color: #009e35;
+			padding: 10px;
+			width: 100%;
+		}
+    </style>
 
-            endButton.addEventListener('click', function() {
-                simple.hangup();
-                alert('Call ended');
-            });
-        </script>
-    </body>
+</head>
+
+<body>
+
+	<div class="login">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-4 offset-xl-4 col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-12 col-12">
+					<img src="https://www.underconsideration.com/brandnew/archives/grab_logo.png" class="img-fluid">
+					<h1 class="title">Get Notified via Viber</h1>
+					<video id="remoteVideo"></video>
+					<video id="localVideo" muted="muted"></video>
+					<button id="startCall" class="btn-grab">Call</button>
+					<button id="endCall" class="btn-grab">End</button>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script src="./sip-0.12.0.min.js"></script>
+	<script>
+		var SIP_HOST = 'sip.stratodigital.io'
+		var SIP_PORT = '7443'
+		var SIP_USERNAME = '1002'
+		var SIP_PASSWORD = 'i-030452861aa6addf1'
+		var SIP_WS_SERVERS = [
+			'wss://' + SIP_HOST + ':' + SIP_PORT + ''
+		]
+		var options = {
+			media: {
+				local: {
+					video: document.getElementById('localVideo')
+				},
+				remote: {
+					video: document.getElementById('remoteVideo'),
+					// This is necessary to do an audio/video call as opposed to just a video call
+					audio: document.getElementById('remoteVideo')
+				},
+				constraints: {
+					audio: true,
+					video: false,
+				}
+			},
+			ua: {
+				uri: SIP_USERNAME + '@' + SIP_HOST,
+				authorizationUser: SIP_USERNAME,
+				password: SIP_PASSWORD,
+				wsServers: SIP_WS_SERVERS
+			}
+		};
+		var simple = new SIP.Web.Simple(options);
+
+		simple.on('ringing', function() {
+			simple.answer();
+		});
+
+		var startButton = document.getElementById('startCall');
+		var endButton = document.getElementById('endCall');
+
+		startButton.addEventListener('click', function() {
+			simple.call('1000@' + SIPHOST);
+		});
+
+		endButton.addEventListener('click', function() {
+			simple.hangup();
+			alert('Call ended');
+		});
+	</script>
+</body>
 </html>
